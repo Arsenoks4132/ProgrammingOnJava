@@ -1,7 +1,5 @@
 package practise_4.task_2;
 
-import practise_3.vehicles.Car;
-
 public class Main {
     public static void main(String[] args) {
 
