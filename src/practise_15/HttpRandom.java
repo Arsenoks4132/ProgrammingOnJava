@@ -6,7 +6,6 @@ import java.util.*;
 
 public class HttpRandom {
     private static final int PORT = 66;
-    private static final List<String> notes = new ArrayList<>();
 
     public static void main(String[] args) {
         try (ServerSocket serverSocket = new ServerSocket(PORT)) {
@@ -35,9 +34,9 @@ public class HttpRandom {
         }
 
         try {
-            String[] pathParts = requestParts[1].split("/?");
+            String[] pathParts = requestParts[1].split("\\?");
             String path = pathParts[0];
-            if (!path.equals("random")) {
+            if (!path.equals("/random")) {
                 sendHttpResponse(out, 404, "<h1>Path not found</h1>");
                 return;
             }
@@ -51,7 +50,7 @@ public class HttpRandom {
                 String[] item = param.split("=");
                 if (item[0].equals("min")) {
                     min = Integer.parseInt(item[1]);
-                } else if (item[1].equals("max")) {
+                } else if (item[0].equals("max")) {
                     max = Integer.parseInt(item[1]);
                 } else {
                     throw new Exception();
@@ -67,7 +66,6 @@ public class HttpRandom {
             sendHttpResponse(out, 400, "<h1>Bad request</h1>");
             return;
         }
-
     }
 
     private static void sendHttpResponse(PrintWriter out, int statusCode, String body) {
@@ -76,5 +74,6 @@ public class HttpRandom {
         out.println("Content-Length: " + body.length());
         out.println();
         out.println(body);
+        out.flush();
     }
 }
